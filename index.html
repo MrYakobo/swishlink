@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swishlink creator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.js"
+        integrity="sha512-pSyYzOKCLD2xoGM1GwkeHbdXgMRVsSqQaaUoHskx/HF09POwvow2VfVEdARIYwdeFLbu+2FCOTRYuiyeGxXkEg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="dist/output.css" rel="stylesheet">
+</head>
+
+<body class="">
+    <div id="app" class="my-6 text-center">
+        <h1 class="my-2 text-4xl text-center font-light uppercase tracking-wide">Swishlink creator</h1>
+        <p class="text-gray-600 italic font-bold tracking-widest text-xs">Doesn't work on iOS devices</p>
+
+        <div class="my-4">
+            <div class="">
+                <input class="border-2 p-1" v-model="payee" type="text" placeholder="Recipient">
+                <label
+                    class="cursor-pointer select-none border border-gray-100 bg-gradient-to-b from-gray-50 to-gray-200 hover:shadow-md hover:border-gray-300 transition-shadow rounded px-3 py-1">
+                    <input hidden v-model="payee_editable" type="checkbox">
+                    {{padlock(payee_editable)}}
+                </label>
+            </div>
+            <div class="my-2">
+                <input class="border-2 p-1" v-model="amount" type="text" placeholder="Amount">
+                <label
+                    class="cursor-pointer select-none border border-gray-100 bg-gradient-to-b from-gray-50 to-gray-200 hover:shadow-md hover:border-gray-300 transition-shadow rounded px-3 py-1">
+                    <input hidden v-model="amount_editable" type="checkbox">
+                    {{padlock(amount_editable)}}
+                </label>
+            </div>
+            <div class="">
+                <input class="border-2 p-1" v-model="message" type="text" placeholder="Message">
+                <label
+                    class="cursor-pointer select-none border border-gray-100 bg-gradient-to-b from-gray-50 to-gray-200 hover:shadow-md hover:border-gray-300 transition-shadow rounded px-3 py-1">
+                    <input hidden v-model="message_editable" type="checkbox">
+                    {{padlock(message_editable)}}
+                </label>
+            </div>
+        </div>
+
+        <p class="text-blue-500 underline hover-underline" v-html="html_link"></p>
+        <br>
+        <textarea
+            class="text-sm text-left w-96 h-72 bg-gray-50 border border-gray-800 rounded p-4">{{html_link}}</textarea>
+    </div>
+</body>
+
+</html>
+
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                payee: '123 456 7890',
+                payee_editable: true,
+                amount: '80',
+                amount_editable: true,
+                message: 'Hello',
+                message_editable: true
+            }
+        },
+        methods: {
+            padlock(b) {
+                return b ? "✍" : "🔒"
+            }
+        },
+        computed: {
+            uri() {
+                let obj = {
+                    version: 1,
+                    payee: {
+                        value: this.payee,
+                        editable: this.payee_editable
+                    },
+                    amount: {
+                        value: this.amount,
+                        editable: this.amount_editable
+                    },
+                    message: {
+                        value: this.message,
+                        editable: this.message_editable
+                    }
+                }
+                return encodeURI(
+                    `swish://payment?data=${JSON.stringify(obj)}`
+                );
+            },
+            html_link() {
+                return `<a href="${this.uri}">Swish ${this.amount}kr to ${this.payee} with the message ${this.message}</a>`
+            }
+        }
+    })
+</script>
