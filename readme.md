@@ -18,6 +18,20 @@ Swishlänkar (swish://) är krångliga att göra dock, eftersom att [länken må
 
 [1]: https://github.com/linuscorin/ruby_swish_qr/issues/1#issuecomment-618370462
 
-## Known problems
+# Lib
 
-Ja, det verkar funka på Android men inte iOS. Fett me rip, så undersök din målgrupp först.
+Om du inte har nått emot lite javascript så finns det ett litet bibliotek.
+Använd swish-link som en WebComponent så här:
+
+```html
+<script src="https://raw.githubusercontent.com/MrYakobo/swishlink/main/lib/swish-link.js"></script>
+
+<swish-link payee="1234567890" payee-editable="false" amount="10" amount-editable="false" message="Hello"
+    message-editable="true">
+    <p>This markup shows up inside the link</p>
+</swish-link>
+```
+
+[Komplett exempel här][2]
+
+[2]: https://mryakobo.github.io/swishlink/lib/
